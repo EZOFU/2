@@ -1,0 +1,63 @@
+# Модификатор (Win)
+set $mod Mod4
+
+# Шрифты для окон
+font pango:DejaVu Sans Mono 10
+
+# Цвета
+set $bg-color #2f343f
+set $inactive-bg-color #2f343f
+set $text-color #f3f4f5
+set $inactive-text-color #676E7D
+set $urgent-bg-color #E53935
+
+# Окрашиваем окна
+client.focused          $bg-color $bg-color $text-color   $bg-color
+client.focused_inactive $inactive-bg-color $inactive-bg-color $inactive-text-color $inactive-bg-color
+client.unfocused        $inactive-bg-color $inactive-bg-color $inactive-text-color $inactive-bg-color
+client.urgent           $urgent-bg-color $urgent-bg-color $text-color           $urgent-bg-color
+
+# Автозапуск
+exec --no-startup-id feh --bg-scale ~/wallpaper.jpg
+exec --no-startup-id picom -b
+exec --no-startup-id nm-applet
+exec --no-startup-id blueman-applet
+exec --no-startup-id dunst
+
+# Polybar (панель)
+exec_always --no-startup-id ~/.config/polybar/launch.sh
+
+# Запуск терминала
+bindsym $mod+Return exec alacritty
+
+# Запуск программ
+bindsym $mod+d exec rofi -show drun
+bindsym $mod+Shift+d exec rofi -show run
+
+# Скриншоты
+bindsym Print exec scrot ~/Pictures/screenshot_%Y-%m-%d_%H-%M-%S.png
+bindsym $mod+Print exec scrot -s ~/Pictures/screenshot_%Y-%m-%d_%H-%M-%S.png
+
+# Режимы
+mode "resize" {
+    bindsym h resize shrink width 10 px or 10 ppt
+    bindsym j resize grow height 10 px or 10 ppt
+    bindsym k resize shrink height 10 px or 10 ppt
+    bindsym l resize grow width 10 px or 10 ppt
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+r mode "resize"
+
+# Горячие клавиши медиа
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5%
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5%
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle
+bindsym XF86MonBrightnessUp exec brightnessctl set +10%
+bindsym XF86MonBrightnessDown exec brightnessctl set 10%-
+
+# Рестарт/выход
+bindsym $mod+Shift+r restart
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'Exit i3?' -b 'Yes' 'i3-msg exit'"
+
+# Остальное управление (оставьте стандартное)
